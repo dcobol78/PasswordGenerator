@@ -1,11 +1,13 @@
-﻿namespace ApplicationCore.Services
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces;
+
+namespace ApplicationCore.Services
 {
     public class PasswordService
     {
-
-        public PasswordService()
+        public PasswordService(IRepository<Password> repository)
         {
-            
+           
         }
     }
 }
