@@ -8,13 +8,13 @@ namespace ApplicationCore.Entities
 {
     public class Password
     {
-        public string PasswordId { get; private set; }
+        public string Id { get; set; }
         public string PasswordContent {  get; private set; }
         public string UsedAlphabit { get; private set; }
 
-        public Password(string passwordId, string passwordContent, string usedAlphabit)
+        public Password(string id, string passwordContent, string usedAlphabit)
         {
-            PasswordId = passwordId;
+            Id = id;
             PasswordContent = passwordContent;
             UsedAlphabit = usedAlphabit;
         }

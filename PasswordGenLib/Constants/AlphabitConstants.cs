@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Constants
 {
-    public class AlphabitConstants
+    public static class AlphabitConstants
     {
-        public const string FullAlphabit = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        public const string FullAlphabitWithNumbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
         public const string UpperAlphabit = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         public const string LowerAlphabit = "abcdefghijklmnopqrstuvwxyz";
         public const string Numbers = "1234567890";
