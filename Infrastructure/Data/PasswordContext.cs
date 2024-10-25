@@ -12,7 +12,7 @@ namespace Infrastructure.Data
     {
         public PasswordContext(DbContextOptions<PasswordContext> options) : base(options) { }
 
-        DbSet<Password> Passwords { get; set; }
+        public DbSet<Password> Passwords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

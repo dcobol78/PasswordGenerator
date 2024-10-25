@@ -10,13 +10,13 @@ namespace ApplicationCore.Entities
     {
         public string PasswordId { get; private set; }
         public string PasswordContent {  get; private set; }
-        public string Alphabit { get; private set; }
+        public string UsedAlphabit { get; private set; }
 
-        public Password(string passwordId, string passwordContent, string alphabit)
+        public Password(string passwordId, string passwordContent, string usedAlphabit)
         {
             PasswordId = passwordId;
             PasswordContent = passwordContent;
-            Alphabit = alphabit;
+            UsedAlphabit = usedAlphabit;
         }
     }
 }

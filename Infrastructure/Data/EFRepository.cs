@@ -5,32 +5,40 @@ using System.Text;
 using System.Threading.Tasks;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class EFRepository<T>: IRepository<T> where T : class
+    public class EFRepository: IRepository<Password>
     {
+        private readonly PasswordContext _dbContext;
         public EFRepository(PasswordContext dbContext) 
-        { }
-
-        public Task<IEnumerable<T>> GetPasswordsAsync(int id)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
         }
 
-        public Task Save()
+        public async Task<IEnumerable<Password>> GetPasswordsAsync()
         {
-            throw new NotImplementedException();
+            var allPasswords = await _dbContext.Passwords.ToListAsync();
+            
+            return allPasswords;
         }
 
-        Task IRepository<T>.AddAsync(T entity)
+        public async Task SaveAsyync()
         {
-            throw new NotImplementedException();
+            await _dbContext.SaveChangesAsync();
         }
 
-        Task IRepository<T>.AddRange(IEnumerable<T> entities)
+        public async Task AddAsync(Password entity)
         {
-            throw new NotImplementedException();
+            await _dbContext.Passwords.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task AddRangeAsync(IEnumerable<Password> entities)
+        {
+            await _dbContext.Passwords.AddRangeAsync(entities);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

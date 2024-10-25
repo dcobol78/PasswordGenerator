@@ -8,12 +8,12 @@ namespace ApplicationCore.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        Task<IEnumerable<T>> GetPasswordsAsync(int id);
+        Task<IEnumerable<T>> GetPasswordsAsync();
 
         Task AddAsync(T entity);
 
-        Task AddRange(IEnumerable<T> entities);
+        Task AddRangeAsync(IEnumerable<T> entities);
 
-        Task Save();
+        Task SaveAsyync();
     }
 }

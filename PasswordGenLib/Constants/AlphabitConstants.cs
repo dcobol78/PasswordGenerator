@@ -12,5 +12,6 @@ namespace ApplicationCore.Constants
         public const string UpperAlphabit = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         public const string LowerAlphabit = "abcdefghijklmnopqrstuvwxyz";
         public const string Numbers = "1234567890";
+        //public const string SpecialSimbols = "!@#$%^&*()_+-=";
     }
 }
