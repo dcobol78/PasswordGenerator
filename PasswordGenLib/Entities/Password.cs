@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Entities
 {
-    internal class Password
+    public class Password
     {
+        public string PasswordId { get; private set; }
+
+        public string PasswordContent {  get; private set; }
+
+        public Password(string passwordId, string passwordContent)
+        {
+            PasswordId = passwordId;
+            PasswordContent = passwordContent;
+        }
     }
 }
