@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Alphabit
+namespace ApplicationCore.Interfaces
 {
-    public interface IAlphabitComponent
+    public interface IClipboardService
     {
-        public string GetAlhapit();
+        public Task CopyTextToClipboard(string text);
     }
 }

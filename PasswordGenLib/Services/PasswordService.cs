@@ -1,5 +1,4 @@
-﻿using ApplicationCore.Alphabit;
-using ApplicationCore.Constants;
+﻿using ApplicationCore.Constants;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using System.Text;
@@ -7,22 +6,31 @@ using System.Xml.Linq;
 
 namespace ApplicationCore.Services
 {
-    public class PasswordService
+    public class PasswordService : IPasswordService
     {
+
         public List<Password> Passwords { get; private set; }
+        private readonly Random _random;
         private readonly IRepository<Password> _repository;
         public PasswordService(IRepository<Password> repository)
         {
             _repository = repository;
             Passwords = new();
+            _random = new Random();
         }
 
         public async Task SavePasswords()
         {
-            if (Passwords != null) 
+            if (Passwords != null && Passwords.Any()) 
             {
                 await _repository.AddRangeAsync(Passwords);
+                Passwords.Clear();
             }
+        }
+
+        public async Task<IEnumerable<Password>> GetSavedPasswordsAsync()
+        {
+            return await _repository.GetPasswordsAsync();
         }
 
         public void GeneratePassword(IAlphabitComponent alphabit, int length)
@@ -35,11 +43,10 @@ namespace ApplicationCore.Services
 
             var PasswordId = Guid.NewGuid().ToString();
             var stringBuilderString = new StringBuilder();
-            var random = new Random();
 
             for (int i = 0; i < length; i++) 
             {
-                var randomIndex = random.Next(0, uniqueSymbols.Length);
+                var randomIndex = _random.Next(0, uniqueSymbols.Length);
                 stringBuilderString.Append(uniqueSymbols[randomIndex]);
             }
 
