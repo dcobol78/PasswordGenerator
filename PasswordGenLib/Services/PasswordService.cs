@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Constants;
+﻿using ApplicationCore.Alphabit;
+using ApplicationCore.Constants;
 using ApplicationCore.Entities;
 using ApplicationCore.Interfaces;
 using System.Text;
@@ -24,22 +25,13 @@ namespace ApplicationCore.Services
             }
         }
 
-        protected string GetAlphabitString(bool useUpper, bool useLower, bool useNumbers)
-        {
-            var alphabitToUse = new StringBuilder();
-            if (useUpper) alphabitToUse.Append(AlphabitConstants.UpperAlphabit);
-            if (useLower) alphabitToUse.Append(AlphabitConstants.LowerAlphabit);
-            if (useNumbers) alphabitToUse.Append(AlphabitConstants.Numbers);
-            return alphabitToUse.ToString();
-        }
-
-        public void GeneratePassword(string alphabit, int length)
+        public void GeneratePassword(IAlphabitComponent alphabit, int length)
         {
 
             if (length <= 0) throw new ArgumentOutOfRangeException(nameof(length));
-            if (string.IsNullOrEmpty(alphabit)) throw new ArgumentNullException(nameof(alphabit));
+            if (alphabit == null) throw new ArgumentNullException(nameof(alphabit));
 
-            string uniqueSymbols = new string(alphabit.Distinct().ToArray());
+            string uniqueSymbols = new string(alphabit.GetAlhapit().Distinct().ToArray());
 
             var PasswordId = Guid.NewGuid().ToString();
             var stringBuilderString = new StringBuilder();
@@ -53,15 +45,10 @@ namespace ApplicationCore.Services
 
             if (Passwords == null) Passwords = new();
             
-            Passwords.Add(new Password(PasswordId, stringBuilderString.ToString(), alphabit));
+            Passwords.Add(new Password(PasswordId, stringBuilderString.ToString(), alphabit.GetAlhapit()));
         }
 
-        public void GeneratePassword(bool useUpper, bool useLower, bool useNumbers, int length)
-        {
-            GeneratePassword(GetAlphabitString(useUpper, useLower, useNumbers), length);
-        }
-
-        public void GenerateSomePasswords(string alphabit, int length, int amount)
+        public void GenerateSomePasswords(IAlphabitComponent alphabit, int length, int amount)
         {
             for (int i = 0; i  <= amount; i++)
             {
@@ -69,14 +56,15 @@ namespace ApplicationCore.Services
             }
         }
 
-        public void GenerateSomePasswords(bool useUpper, bool useLower, bool useNumbers, int length, int amount)
+        /*
+        protected string GetAlphabitString(bool useUpper, bool useLower, bool useNumbers)
         {
-            var alphabitToUseString = GetAlphabitString(useUpper, useLower, useNumbers);
-
-            for (int i = 0; i <= amount; i++)
-            {
-                GeneratePassword(alphabitToUseString, length);
-            }
+            var alphabitToUse = new StringBuilder();
+            if (useUpper) alphabitToUse.Append(AlphabitConstants.UpperAlphabit);
+            if (useLower) alphabitToUse.Append(AlphabitConstants.LowerAlphabit);
+            if (useNumbers) alphabitToUse.Append(AlphabitConstants.Numbers);
+            return alphabitToUse.ToString();
         }
+        */
     }
 }
