@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
-    <ProjectReference Include="..\PasswordGenLib\ApplicationCore.csproj" />
   </ItemGroup>
 
 </Project>
