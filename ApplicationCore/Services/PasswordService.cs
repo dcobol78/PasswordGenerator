@@ -33,13 +33,14 @@ namespace ApplicationCore.Services
             return await _repository.GetPasswordsAsync();
         }
 
-        public void GeneratePassword(IAlphabitComponent alphabit, int length)
+        public void GeneratePassword(IAlphabitComponent alphabit, int length, string uniqueSymbols = "")
         {
 
             if (length <= 0) throw new ArgumentOutOfRangeException(nameof(length));
             if (alphabit == null) throw new ArgumentNullException(nameof(alphabit));
 
-            string uniqueSymbols = new string(alphabit.GetAlhapit().Distinct().ToArray());
+            if (string.IsNullOrEmpty(uniqueSymbols))
+                uniqueSymbols = new string(alphabit.GetAlhapit().Distinct().ToArray());
 
             var PasswordId = Guid.NewGuid().ToString();
             var stringBuilderString = new StringBuilder();
@@ -57,9 +58,20 @@ namespace ApplicationCore.Services
 
         public void GenerateSomePasswords(IAlphabitComponent alphabit, int length, int amount)
         {
-            for (int i = 0; i  <= amount; i++)
+            if (alphabit == null) throw new ArgumentNullException(nameof(alphabit));
+
+            var uniqueSymbols = new string(alphabit.GetAlhapit().Distinct().ToArray());
+            for (int i = 0; i < amount; i++)
             {
-                GeneratePassword(alphabit, length);
+                GeneratePassword(alphabit, length, uniqueSymbols);
+            }
+        }
+
+        public void ClearBuffer()
+        {
+            if (Passwords != null && Passwords.Any())
+            {
+                Passwords.Clear();
             }
         }
 

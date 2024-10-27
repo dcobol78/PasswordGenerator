@@ -6,6 +6,9 @@
 
 @inject IClipboardService ClipboardService
 @inject IPasswordService PasswordService
+@using WebApp.Components.Modals
+
+<BufferOverflowModal IsVisible="@isModalVisible" OnClose="CloseModal" />
 
 <h3>Генератор паролей</h3>
 
@@ -32,6 +35,7 @@
 <button class="btn btn-primary" @onclick="GeneratePasswords">Сгенерировать пароли</button>
 <button class="btn btn-secondary" @onclick="CopyToClipboard">Скопировать в буфер обмена</button>
 <button class="btn btn-success" @onclick="SaveToRepository">Сохранить в базу данных</button>
+<button class="btn btn-danger" @onclick="ClearBuffer">Очистить буфер</button>
 
 <div>
     <h5>Результаты генерации</h5>
@@ -50,10 +54,11 @@
 {
     private int passwordCount = 1;
     private int passwordLength = 1;
+    private bool isModalVisible = false;
 
     public string PasswordAlphabit = "";
     public int PasswordLength { get => passwordLength; set => passwordLength = value < 1 ? 1 : value > 255 ? 255 : value; }
-    public int PasswordCount { get => passwordCount; set => passwordCount = value < 1 ? 1 : value > 10000 ? 10000 : value; }
+    public int PasswordCount { get => passwordCount; set => passwordCount = value < 1 ? 1 : value > 1000 ? 1000 : value; }
 
     public List<string> GeneratedPasswords { get; private set; }
 
@@ -70,22 +75,34 @@
         }
     }
 
+    private void CloseModal(bool isVisible)
+    {
+        isModalVisible = isVisible;
+    }
+
     void GeneratePasswords()
     {
-        IAlphabitComponent alphabit = new Alphabit(PasswordAlphabit);
-
-        if (PasswordAlphabit == "") alphabit = new DeafualtDecorator(alphabit);
-
-        if (passwordCount == 1)
+        if (GeneratedPasswords.Count() + passwordCount > 1000)
         {
-            PasswordService.GeneratePassword(alphabit, passwordLength);
+            isModalVisible = true;
         }
         else
         {
-            PasswordService.GenerateSomePasswords(alphabit, passwordLength, passwordCount);
-        }
+            IAlphabitComponent alphabit = new Alphabit(PasswordAlphabit);
 
-        GeneratedPasswords = PasswordService.Passwords.Select(p => p.PasswordContent).ToList();
+            if (PasswordAlphabit == "") alphabit = new DeafualtDecorator(alphabit);
+
+            if (passwordCount == 1)
+            {
+                PasswordService.GeneratePassword(alphabit, passwordLength);
+            }
+            else
+            {
+                PasswordService.GenerateSomePasswords(alphabit, passwordLength, passwordCount);
+            }
+
+            GeneratedPasswords = PasswordService.Passwords.Select(p => p.PasswordContent).ToList();
+        }
     }
 
     async Task CopyToClipboard()
@@ -103,4 +120,12 @@
         }
     }
 
+    private void ClearBuffer()
+    {
+        if (GeneratedPasswords != null)
+        {
+            PasswordService.ClearBuffer();
+            GeneratedPasswords.Clear();
+        }
+    }
 }

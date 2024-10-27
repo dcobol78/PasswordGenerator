@@ -1,0 +1,28 @@
+﻿
+<div class="modal fade @(IsVisible ? "show d-block" : "")" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Предупреждение</h5>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="CloseModal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Буфер паролей переполнен, максимальное число паролей в буфере 1000.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="CloseModal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public bool IsVisible { get; set; }
+    [Parameter] public EventCallback<bool> OnClose { get; set; }
+
+    private async Task CloseModal()
+    {
+        IsVisible = false;
+        await OnClose.InvokeAsync(IsVisible);
+    }
+}
