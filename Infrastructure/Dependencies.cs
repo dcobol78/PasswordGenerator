@@ -16,7 +16,7 @@ namespace Infrastructure
         {
             // Конфигурация к бд
             services.AddDbContext<PasswordContext>(c =>
-                c.UseSqlServer(configuration.GetConnectionString("PasswordConnection")));
+                c.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=aspnet-PasswordsDb;Trusted_Connection=True;MultipleActiveResultSets=true"));
         }
     }
 }
